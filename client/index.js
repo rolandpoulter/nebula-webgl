@@ -1,68 +1,7 @@
-var engine = require('./engine').init(document.body),
-    canvas = engine.canvas,
-    camera = engine.camera,
-    shader = engine.shader,
-    matrix = engine.math.mat4,
-    quad = require('./nebula/quad'),
-    gl = engine.gl;
-
+var engine = require('./engine').init(document.body);
 
 window.engine = engine;
 
+require('./square').init(engine);
 
-engine.shader.load('white', function (error, white) {
-	if (error) {
-		return console.error(error);
-	}
-
-
-	window.onresize = resize;
-
-	function resize () {
-		canvas.width = this.innerWidth;
-		canvas.height = this.innerHeight;
-		render();
-	};
-
-
-	canvas.clear(
-		gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT,
-		gl.DEPTH_TEST,
-		[0, 0, 0, 1.0]
-	);
-
-
-	var quad_matrix = matrix.create();
-	var quad_buffer = engine.buffer.createArray('quad', new Float32Array([
-		 1.0,  1.0,  0.0,
-		-1.0,  1.0,  0.0,
-		 1.0, -1.0,  0.0,
-		-1.0, -1.0,  0.0
-	]), {item_size: 3});
-
-
-	shader.use('white');
-
-
-	function render () {
-		gl.viewport(0, 0, canvas.width, canvas.height);
-		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-		camera.perspective(45, canvas.width / canvas.height, 0.1, 100.0);
-		camera.lookAt(
-			[0.0, 0.0, 0.0],
-			[0.0, 0.0, 0.0],
-			[0.0, 1.0, 0.0]
-		);
-
-		matrix.identity(quad_matrix);
-		matrix.translate(quad_matrix, quad_matrix, [0.0, 0.0, -7.0]);
-
-		white.drawArrayBufferStrip(quad_buffer, camera.matrix(quad_matrix));
-
-		return true;
-	}
-
-
-	resize();
-});
+//window.nebula = require('./nebula').init(engine);

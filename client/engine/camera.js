@@ -1,3 +1,6 @@
+"use strict";
+
+
 exports.init = function (engine) {
 	var matrix = engine.math.mat4,
 	    camera = {};
@@ -28,7 +31,7 @@ exports.init = function (engine) {
 
 
 	camera.matrix = function (model) {
-		var model_view = matrix.multiply(new Float32Array(16), model, camera.view);
+		var model_view = matrix.multiply(new Float32Array(16), model || matrix.create(), camera.view);
 
 		return matrix.multiply(new Float32Array(16), camera.projection, model_view);
 	};

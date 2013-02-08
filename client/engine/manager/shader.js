@@ -1,3 +1,6 @@
+"use strict";
+
+
 exports.init = function (engine) {
 	var manager = {};
 
@@ -104,6 +107,8 @@ exports.init = function (engine) {
 				console.error(error);
 				return null;
 			}
+
+			gl.useProgram(program);
 
 			return program;
 		}

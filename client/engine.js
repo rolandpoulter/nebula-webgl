@@ -1,3 +1,6 @@
+"use strict";
+
+
 var glMatrix = require('gl-matrix');
 
 

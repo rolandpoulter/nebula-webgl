@@ -1,3 +1,6 @@
+"use strict";
+
+
 exports.init = function (parent) {
 	var canvas = document.createElement('canvas');
 
