@@ -1,0 +1,13 @@
+body {
+	overflow: hidden;
+	margin: 0;
+	font: 1em "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+body.error {
+	padding: 1em;
+}
+
+a {
+	color: #00B7FF;
+}

@@ -1,0 +1,31 @@
+exports.init = function (engine) {
+	var matrix = engine.math.mat4,
+	    camera = {};
+
+	camera.view = matrix.create();
+	camera.projection = matrix.create();
+
+
+	camera.perspective = function (fovy, aspect, near, far) {
+		matrix.perspective(camera.projection, fovy, aspect, near, far);
+
+		return camera;
+	};
+
+
+	camera.lookAt = function (eye, center, up) {
+		matrix.lookAt(camera.view, eye, center, up);
+
+		return camera;
+	};
+
+
+	camera.matrix = function (model) {
+		var model_view = matrix.multiply(new Float32Array(16), model, camera.view);
+
+		return matrix.multiply(model_view, model_view, camera.projection);
+	};
+
+
+	return camera;
+};
