@@ -31,11 +31,12 @@ exports.init = function (engine) {
 		options.length = options.length || array_buffer.length || 0;
 		options.draw_type = options.draw_type || gl.STATIC_DRAW;
 		options.item_size = options.item_size || 1;
-		options.item_length = options.length / buffer.item_size;
+		options.item_length = options.item_length || options.length / options.item_size;
 
 		gl.bindBuffer(options.type, buffer);
 		gl.bufferData(options.type, array_buffer, options.draw_type);
 
+		buffer.name = name;
 		buffer.info = options;
 
 		return manager.cache[name] = buffer;

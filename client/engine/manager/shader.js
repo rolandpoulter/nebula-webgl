@@ -81,6 +81,8 @@ exports.init = function (engine) {
 		function compileProgram () {
 			var program = gl.createProgram();
 
+			program.name = name;
+
 			gl.attachShader(program, compileVertexShader());
 			gl.attachShader(program, compileFragmentShader());
 

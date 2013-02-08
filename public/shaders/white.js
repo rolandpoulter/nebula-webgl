@@ -1,22 +1,24 @@
 function main () {
-	program.vertexPositionAttribute = gl.getAttribLocation(program, 'aVertexPosition');
+	program.vertex_position_attribute = gl.getAttribLocation(program, 'aVertexPosition');
 
-	gl.enableVertexAttribArray(program.vertexPositionAttribute);
+	gl.enableVertexAttribArray(program.vertex_position_attribute);
 
-	program.mvpMatrixUniform = gl.getUniformLocation(program, 'uMVPMatrix');
+	program.p_matrix_uniform = gl.getUniformLocation(program, 'uPMatrix');
+	program.mv_matrix_uniform = gl.getUniformLocation(program, 'uMVMatrix');
 
-	program.setMatrixUniforms = function (mvp_matrix) {
-		gl.uniformMatrix4fv(program.mvpMatrixUniform, false, mvp_matrix);
+	program.setMatrixUniforms = function (mv_matrix, p_matrix) {
+		gl.uniformMatrix4fv(program.p_matrix_uniform, false, p_matrix);
+		gl.uniformMatrix4fv(program.mv_matrix_uniform, false, mv_matrix);
 	};
 
-	program.drawTriangleBuffer = function (buffer, model_matrix, camera) {
+	program.drawTriangleStripBuffer = function (buffer, model_matrix, camera) {
 		var info = buffer.info;
 
 		gl.bindBuffer(info.type, buffer);
-		gl.vertexAttribPointer(program.vertexPositionAttribute, info.item_size, gl.FLOAT, false, 0, 0);
+		gl.vertexAttribPointer(program.vertex_position_attribute, info.item_size, gl.FLOAT, false, 0, 0);
 
-		program.setMatrixUniforms(camera.matrix(model_matrix));
+		program.setMatrixUniforms(camera.matrix(model_matrix), camera.projection);
 
-		gl.drawArrays(gl.TRIANGLES, 0, info.items_length);
+		gl.drawArrays(gl.TRIANGLE_STRIP, 0, info.item_length);
 	};
 }

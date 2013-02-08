@@ -6,6 +6,13 @@ exports.init = function (engine) {
 	camera.projection = matrix.create();
 
 
+	camera.orthographic = function (fovy, left, right, bottom, top, near, far) {
+		matrix.ortho(camera.projection, left, right, bottom, top, near, far);
+
+		return camera;
+	};
+
+
 	camera.perspective = function (fovy, aspect, near, far) {
 		matrix.perspective(camera.projection, fovy, aspect, near, far);
 
@@ -23,7 +30,8 @@ exports.init = function (engine) {
 	camera.matrix = function (model) {
 		var model_view = matrix.multiply(new Float32Array(16), model, camera.view);
 
-		return matrix.multiply(model_view, model_view, camera.projection);
+		return model_view;
+		//return matrix.multiply(model_view, model_view, camera.projection);
 	};
 
 
