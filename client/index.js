@@ -49,12 +49,16 @@ engine.shader.load('white', function (error, white) {
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 		camera.perspective(45, canvas.width / canvas.height, 0.1, 100.0);
-		camera.lookAt([0.0, 0.0, -1.0], [0.0, 0.0, 0.0], [0.0, 1.0, 0.0]);
+		camera.lookAt(
+			[0.0, 0.0, 0.0],
+			[0.0, 0.0, 0.0],
+			[0.0, 1.0, 0.0]
+		);
 
 		matrix.identity(quad_matrix);
 		matrix.translate(quad_matrix, quad_matrix, [0.0, 0.0, -7.0]);
 
-		white.drawTriangleStripBuffer(quad_buffer, quad_matrix, camera);
+		white.drawArrayBufferStrip(quad_buffer, camera.matrix(quad_matrix));
 
 		return true;
 	}
