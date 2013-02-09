@@ -35,6 +35,9 @@ exports.init = function (engine, callback) {
 	nebula.fullscreen = window.onresize = fullscreen;
 
 
+	nebula.position = [0, 10, 10];
+
+
 	function finish (error) {
 		finish.count += 1;
 
@@ -46,10 +49,9 @@ exports.init = function (engine, callback) {
 			if (!finish.error && finish.count === finish.target) {
 				nebula.stars.generate();
 
-				nebula.resize = window.onresize = resize;
 				nebula.render = render;
 
-				resize();
+				engine.renderWhile(render);
 
 				if (callback) {
 					callback(null, nebula);
@@ -67,16 +69,13 @@ exports.init = function (engine, callback) {
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	}
 
-	function resize () {
-		fullscreen();
-		render();
-	}
-
 
 	function render () {
-		camera.perspective(45, canvas.width / canvas.height, 0.1, 100.0);
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+		camera.perspective(45, canvas.width / canvas.height, 0.1, 1000.0);
 		camera.lookAt(
-			[0.0, 0.0, -2.0],
+			nebula.position,
 			[0.0, 0.0, 0.0],
 			[0.0, 1.0, 0.0]
 		);
@@ -86,6 +85,36 @@ exports.init = function (engine, callback) {
 		nebula.mark.render();
 
 		return true;
+	}
+
+
+	window.onkeydown = function (e) {
+		if (nebula.keys[e.keyIdentifier]) {
+			nebula.keys[e.keyIdentifier](e.shiftKey);
+		}
+	};
+
+	nebula.keys = {
+		'Up': function (shift) {
+			if (shift) {
+				nebula.position[2] -= 0.25;
+			} else {
+				nebula.position[1] += 0.25;
+			}
+		},
+		'Down': function (shift) {
+			if (shift) {
+				nebula.position[2] += 0.25;
+			} else {
+				nebula.position[1] -= 0.25;
+			}
+		},
+		'Left': function () {
+			nebula.position[0] -= 0.25;
+		},
+		'Right': function () {
+			nebula.position[0] += 0.25;
+		}
 	}
 
 

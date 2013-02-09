@@ -59,7 +59,9 @@ exports.init = function (parent) {
 
 		function step (now) {
 			start = start || engine.startTime();
-			if (callback(now, start)) engine.requestFrame(step);
+			if (callback(now, start)) {
+				engine.requestFrame.call(window, step);
+			}
 		}
 
 		step();
