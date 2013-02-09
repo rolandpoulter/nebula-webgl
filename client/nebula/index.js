@@ -117,6 +117,40 @@ exports.init = function (engine, callback) {
 		}
 	}
 
+	window.onmousedown = function (e) {
+		var startX = e.clientX,
+		    startY = e.clientY;
+
+		window.onmouseup = function () {
+			window.onmousemove = null;
+		};
+
+		window.onmousemove = function (e) {
+			var diffX = e.clientX - startX,
+			    diffY = e.clientY - startY;
+
+			if (diffX > 50) {
+				nebula.position[0] += 0.1;
+			} else if (diffX < 50) {
+				nebula.position[0] -= 0.1;
+			}
+
+			if (diffY > 50) {
+				if (e.shiftKey) {
+					nebula.position[2] -= 0.1;
+				} else {
+					nebula.position[1] += 0.1;
+				}
+			} else if (diffY < 50) {
+				if (e.shiftKey) {
+					nebula.position[2] += 0.1;
+				} else {
+					nebula.position[1] -= 0.1;
+				}
+			}
+		}
+	};
+
 
 	return nebula;
 };
