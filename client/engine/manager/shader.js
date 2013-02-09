@@ -28,6 +28,9 @@ exports.init = function (engine) {
 		fragment_request.onload =
 		vertex_request.onload = finish;
 
+		finish.count = 0;
+		finish.target = 3;
+
 		send(procedure_request, manager.procedure_ext);
 		send(fragment_request, manager.fragment_ext);
 		send(vertex_request, manager.vertex_ext);
@@ -41,9 +44,6 @@ exports.init = function (engine) {
 			var status = request.status;
 			return status >= 200 && status < 300 || status === 304 
 		}
-
-		finish.count = 0;
-		finish.target = 3;
 
 		function finish () {
 			finish.count += 1;
@@ -134,13 +134,6 @@ exports.init = function (engine) {
 
 			return shader;
 		}
-	};
-
-
-	manager.use = function (name) {
-		engine.gl.useProgram(manager.get(name));
-
-		return manager;
 	};
 
 

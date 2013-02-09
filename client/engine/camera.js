@@ -36,6 +36,5 @@ exports.init = function (engine) {
 		return matrix.multiply(new Float32Array(16), camera.projection, model_view);
 	};
 
-
 	return camera;
 };

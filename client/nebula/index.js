@@ -1,37 +1,39 @@
-"use strict";
+null;
 
 
-var stars = require('./stars'),
-    plane = require('./plane'),
-    mark = require('./plane');
+var planes = require('./planes'),
+    stars = require('./stars'),
+    mark = require('./mark');
 
 
 exports.init = function (engine, callback) {
 	var nebula = {},
 	    canvas = engine.canvas,
+	    camera = engine.camera,
 	    gl = engine.gl;
 
 	nebula.engine = engine;
 
 
+	finish.count = 0;
+	finish.target = 3;
+
+
+	nebula.planes = planes.init(nebula, finish);
 	nebula.stars = stars.init(nebula, finish);
-	nebula.plane = plane.init(nebula, finish);
-	nebula.makr = mark.init(nebula, finish);
+	nebula.mark = mark.init(nebula, finish);
 
 
 	fullscreen();
 	canvas.clear(
 		gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT,
-		gl.DEPTH_TEST,
+		null,
 		[0, 0, 0, 1.0]
 	);
 
 
 	nebula.fullscreen = window.onresize = fullscreen;
 
-
-	finish.count = 0;
-	finish.target = 3;
 
 	function finish (error) {
 		finish.count += 1;
@@ -42,6 +44,8 @@ exports.init = function (engine, callback) {
 			}
 
 			if (!finish.error && finish.count === finish.target) {
+				nebula.stars.generate();
+
 				nebula.resize = window.onresize = resize;
 				nebula.render = render;
 
@@ -70,8 +74,16 @@ exports.init = function (engine, callback) {
 
 
 	function render () {
-		// TODO:
-		console.log('got here');
+		camera.perspective(45, canvas.width / canvas.height, 0.1, 100.0);
+		camera.lookAt(
+			[0.0, 0.0, -2.0],
+			[0.0, 0.0, 0.0],
+			[0.0, 1.0, 0.0]
+		);
+
+		nebula.stars.render();
+		nebula.planes.render();
+		nebula.mark.render();
 
 		return true;
 	}

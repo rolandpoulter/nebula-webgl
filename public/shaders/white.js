@@ -17,5 +17,5 @@ function main () {
 
 	program.drawArrayBufferStrip = function (buffer, mvp_matrix, type) {
 		program.drawArrayBuffer(buffer, mvp_matrix, gl.TRIANGLE_STRIP, type);
-	}
+	};
 }
