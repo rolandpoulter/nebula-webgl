@@ -60,7 +60,7 @@ exports.init = function (engine, callback) {
 			matrix.identity(quad_matrix);
 			matrix.translate(quad_matrix, quad_matrix, [0.0, 0.0, -7.0]);
 	
-			white.drawArrayBufferStrip(quad_buffer, camera.matrix(quad_matrix));
+			white.drawFloatArrayBufferStrip(quad_buffer, camera.matrix(quad_matrix));
 	
 			return true;
 		}

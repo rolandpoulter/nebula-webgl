@@ -1,7 +1,8 @@
 null;
 
 
-var planes = require('./planes'),
+var events = require('./events'),
+    planes = require('./planes'),
     stars = require('./stars'),
     mark = require('./mark');
 
@@ -32,10 +33,11 @@ exports.init = function (engine, callback) {
 	);
 
 
-	nebula.fullscreen = window.onresize = fullscreen;
-
-
+	nebula.fullscreen = fullscreen;
 	nebula.position = [0, 10, 10];
+
+
+	nebula.events = events.init(nebula);
 
 
 	function finish (error) {
@@ -48,8 +50,8 @@ exports.init = function (engine, callback) {
 
 			if (!finish.error && finish.count === finish.target) {
 				nebula.stars.generate();
-
-				nebula.render = render;
+				nebula.planes.generate();
+				nebula.mark.prepare();
 
 				engine.renderWhile(render);
 
@@ -86,70 +88,6 @@ exports.init = function (engine, callback) {
 
 		return true;
 	}
-
-
-	window.onkeydown = function (e) {
-		if (nebula.keys[e.keyIdentifier]) {
-			nebula.keys[e.keyIdentifier](e.shiftKey);
-		}
-	};
-
-	nebula.keys = {
-		'Up': function (shift) {
-			if (shift) {
-				nebula.position[2] -= 0.25;
-			} else {
-				nebula.position[1] += 0.25;
-			}
-		},
-		'Down': function (shift) {
-			if (shift) {
-				nebula.position[2] += 0.25;
-			} else {
-				nebula.position[1] -= 0.25;
-			}
-		},
-		'Left': function () {
-			nebula.position[0] -= 0.25;
-		},
-		'Right': function () {
-			nebula.position[0] += 0.25;
-		}
-	}
-
-	window.onmousedown = function (e) {
-		var startX = e.clientX,
-		    startY = e.clientY;
-
-		window.onmouseup = function () {
-			window.onmousemove = null;
-		};
-
-		window.onmousemove = function (e) {
-			var diffX = e.clientX - startX,
-			    diffY = e.clientY - startY;
-
-			if (diffX > 50) {
-				nebula.position[0] += 0.1;
-			} else if (diffX < 50) {
-				nebula.position[0] -= 0.1;
-			}
-
-			if (diffY > 50) {
-				if (e.shiftKey) {
-					nebula.position[2] -= 0.1;
-				} else {
-					nebula.position[1] += 0.1;
-				}
-			} else if (diffY < 50) {
-				if (e.shiftKey) {
-					nebula.position[2] += 0.1;
-				} else {
-					nebula.position[1] -= 0.1;
-				}
-			}
-		}
-	};
 
 
 	return nebula;

@@ -1,21 +1,24 @@
 function main () {
-	program.vertex_position_attribute = gl.getAttribLocation(program, 'vertex_position_attribute');
+	var vertex_position_attribute = gl.getAttribLocation(program, 'vertex_position_attribute');
 
-	gl.enableVertexAttribArray(program.vertex_position_attribute);
+	var mvp_matrix_uniform = gl.getUniformLocation(program, 'mvp_matrix_uniform');
 
-	program.mvp_matrix_uniform = gl.getUniformLocation(program, 'mvp_matrix_uniform');
-
-	program.drawArrayBuffer = function (buffer, mvp_matrix, mode, type) {
+	program.drawFloatArrayBuffer = function (buffer, mvp_matrix, mode, type) {
 		var info = buffer.info;
 
 		gl.bindBuffer(info.type, buffer);
-		gl.vertexAttribPointer(program.vertex_position_attribute, info.item_size, type || gl.FLOAT, false, 0, 0);
 
-		gl.uniformMatrix4fv(program.mvp_matrix_uniform, false, mvp_matrix);
+		gl.enableVertexAttribArray(vertex_position_attribute);
+		gl.vertexAttribPointer(vertex_position_attribute, info.item_size, gl.FLOAT, false, 0, 0);
+
+		gl.uniformMatrix4fv(mvp_matrix_uniform, false, mvp_matrix);
+
 		gl.drawArrays(mode || gl.TRIANGLES, 0, info.item_length);
+
+		gl.disableVertexAttribArray(vertex_position_attribute);
 	};
 
-	program.drawArrayBufferStrip = function (buffer, mvp_matrix, type) {
-		program.drawArrayBuffer(buffer, mvp_matrix, gl.TRIANGLE_STRIP, type);
+	program.drawFloatArrayBufferStrip = function (buffer, mvp_matrix) {
+		program.drawFloatArrayBuffer(buffer, mvp_matrix, gl.TRIANGLE_STRIP);
 	};
 }

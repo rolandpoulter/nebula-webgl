@@ -102,13 +102,12 @@ exports.init = function (engine) {
 		function compileProcedure (program) {
 			try {
 				eval('main();\n' + procedure_source);
+				gl.useProgram(program);
 
 			} catch (error) {
 				console.error(error);
 				return null;
 			}
-
-			gl.useProgram(program);
 
 			return program;
 		}

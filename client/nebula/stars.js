@@ -36,6 +36,8 @@ exports.init = function (nebula, callback) {
 
 				var amount = (options.amount || 1000) * 4,
 				    range = gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE),
+				    minS = range[0] > 2 ? range[0] : 2,
+				    maxS = range[1] < 32 ? range[1] : 32,
 				    maxX = options.maxX ||  50.0,
 				    minX = options.minX || -50.0,
 				    maxY = options.maxY ||  50.0,
@@ -45,17 +47,17 @@ exports.init = function (nebula, callback) {
 				    list = new Float32Array(amount);
 
 				for (var i = 0; i < amount; i += 4) {
-					list[i]     = randomScaler(minX, maxX);
-					list[i + 1] = randomScaler(minY, maxY);
-					list[i + 2] = randomScaler(minZ, maxZ);
-					list[i + 3] = randomScaler(range[0] * 2, range[1] / 2);
+					list[i]     = random(minX, maxX);
+					list[i + 1] = random(minY, maxY);
+					list[i + 2] = random(minZ, maxZ);
+					list[i + 3] = random(minS, maxS);
 				}
 
-				function randomScaler (min, max) {
+				function random (min, max) {
 					return Math.random() * (max - min) + min;
 				}
 
-				stars.list = buffer.createArray('stars', list, {item_size: 4});
+				stars.list = buffer.createArray('nebula/stars', list, {item_size: 4});
 
 				return stars;
 			};
@@ -70,6 +72,8 @@ exports.init = function (nebula, callback) {
 				gl.blendFunc(gl.SRC_ALPHA, gl.DST_ALPHA);
 
 				program.draw(stars.list, sprite, camera.matrix());
+
+				return stars;
 			};
 
 
