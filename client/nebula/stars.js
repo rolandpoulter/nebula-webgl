@@ -11,7 +11,7 @@ exports.init = function (nebula, callback) {
 	    gl = engine.gl;
 
 
-	texture.load('star-sprite.png', function (error, sprite) {
+	texture.load('nebula/star-sprite.png', function (error, sprite) {
 		if (error) {
 			console.error(error);
 			return callback(error);
@@ -34,30 +34,36 @@ exports.init = function (nebula, callback) {
 			stars.generate = function (options) {
 				options = options || {};
 
-				var amount = (options.amount || 1000) * 4,
+				var size = 9,
+				    amount = (options.amount || 2337) * size,
 				    range = gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE),
-				    minS = range[0] > 2 ? range[0] : 2,
-				    maxS = range[1] < 32 ? range[1] : 32,
-				    maxX = options.maxX ||  50.0,
-				    minX = options.minX || -50.0,
-				    maxY = options.maxY ||  50.0,
-				    minY = options.minY || -50.0,
-				    maxZ = options.maxZ ||  50.0,
-				    minZ = options.minZ || -50.0,
-				    list = new Float32Array(amount);
+				    minS = range[0],
+				    maxS = range[1] < 24 ? range[1] : 24,
+				    maxX = options.maxX ||  500.0,
+				    minX = options.minX || -500.0,
+				    maxY = options.maxY ||  500.0,
+				    minY = options.minY || -500.0,
+				    maxZ = options.maxZ ||  500.0,
+				    minZ = options.minZ || -500.0,
+				    list = new Float32Array(amount),
+				    i = 0;
 
-				for (var i = 0; i < amount; i += 4) {
-					list[i]     = random(minX, maxX);
-					list[i + 1] = random(minY, maxY);
-					list[i + 2] = random(minZ, maxZ);
-					list[i + 3] = random(minS, maxS);
+				while (i < amount) {
+					list[i++] = random(minX, maxX);
+					list[i++] = random(minY, maxY);
+					list[i++] = random(minZ, maxZ);
+					list[i++] = random(minS, maxS);
+					list[i++] = 1.94 - (0.16 * Math.random());
+					list[i++] = 1.94 - (0.16 * Math.random());
+					list[i++] = 1.91 - (0.11 * Math.random());Math.random();
+					list[i++] = Math.random();
 				}
 
 				function random (min, max) {
 					return Math.random() * (max - min) + min;
 				}
 
-				stars.list = buffer.createArray('nebula/stars', list, {item_size: 4});
+				stars.list = buffer.createArray('nebula/stars', list, {item_size: size});
 
 				return stars;
 			};
@@ -71,7 +77,9 @@ exports.init = function (nebula, callback) {
 				gl.enable(gl.BLEND);
 				gl.blendFunc(gl.SRC_ALPHA, gl.DST_ALPHA);
 
-				program.draw(stars.list, sprite, camera.matrix());
+				gl.blendEquation(gl.FUNC_ADD);
+
+				program.draw(stars.list, sprite, camera.mvp_matrix());
 
 				return stars;
 			};

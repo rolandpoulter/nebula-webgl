@@ -12,7 +12,7 @@ exports.init = function (nebula) {
 			
 			} else {
 				nebula.position[1] += amount || 0.25;
-				console.log(nebula.position);
+				//console.log(nebula.position);
 			}
 		},
 
@@ -22,28 +22,28 @@ exports.init = function (nebula) {
 
 			} else {
 				nebula.position[1] -= amount || 0.25;
-				console.log(nebula.position);
+				//console.log(nebula.position);
 			}
 		},
 
 		left: function (amount) {
 			nebula.position[0] -= amount || 0.25;
-			console.log(nebula.position);
+			//console.log(nebula.position);
 		},
 
 		right: function (amount) {
 			nebula.position[0] += amount || 0.25;
-			console.log(nebula.position);
+			//console.log(nebula.position);
 		},
 
 		forward: function (amount) {
 			nebula.position[2] -= amount || 0.25;
-			console.log(nebula.position);
+			//console.log(nebula.position);
 		},
 
 		backward: function (amount) {
 			nebula.position[2] += amount || 0.25;
-			console.log(nebula.position);
+			//console.log(nebula.position);
 		}
 	};
 

@@ -2,6 +2,12 @@ precision mediump float;
 
 uniform sampler2D texture;
 
+varying vec4 random;
+
 void main(void) {
 	gl_FragColor = texture2D(texture, gl_PointCoord);
+	gl_FragColor.r = gl_FragColor.r * random.x;
+	gl_FragColor.g = gl_FragColor.g * random.y;
+	gl_FragColor.b = gl_FragColor.b * random.z;
+	gl_FragColor.a = gl_FragColor.a * random.w;
 }

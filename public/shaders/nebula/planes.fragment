@@ -1,5 +1,11 @@
 precision mediump float;
 
+uniform sampler2D texture;
+
+varying vec2 vertex_coordinate;
+varying float opacity;
+
 void main(void) {
-	gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+	gl_FragColor = texture2D(texture, vec2(vertex_coordinate.s, vertex_coordinate.t));
+	gl_FragColor.a = (gl_FragColor.a * opacity) * 0.25;
 }

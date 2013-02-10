@@ -1,7 +1,14 @@
 attribute vec3 vertex_position_attribute;
+attribute vec3 vertex_coordinate_attribute;
 
 uniform mat4 mvp_matrix_uniform;
+uniform float opacity_uniform;
+
+varying vec2 vertex_coordinate;
+varying float opacity;
 
 void main(void) {
 	gl_Position = mvp_matrix_uniform * vec4(vertex_position_attribute, 1.0);
+	vertex_coordinate = vec2(vertex_coordinate_attribute);
+	opacity = opacity_uniform;
 }

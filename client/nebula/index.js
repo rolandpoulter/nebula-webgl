@@ -1,4 +1,4 @@
-null;
+"use struct";
 
 
 var events = require('./events'),
@@ -35,6 +35,8 @@ exports.init = function (engine, callback) {
 
 	nebula.fullscreen = fullscreen;
 	nebula.position = [0, 10, 10];
+	nebula.target = [0, 0, 0];
+	nebula.up = [0, 1, 0];
 
 
 	nebula.events = events.init(nebula);
@@ -78,8 +80,8 @@ exports.init = function (engine, callback) {
 		camera.perspective(45, canvas.width / canvas.height, 0.1, 1000.0);
 		camera.lookAt(
 			nebula.position,
-			[0.0, 0.0, 0.0],
-			[0.0, 1.0, 0.0]
+			nebula.target,
+			nebula.up
 		);
 
 		nebula.stars.render();

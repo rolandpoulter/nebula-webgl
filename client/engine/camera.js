@@ -30,10 +30,12 @@ exports.init = function (engine) {
 	};
 
 
-	camera.matrix = function (model) {
-		var model_view = matrix.multiply(new Float32Array(16), camera.view, model || matrix.create());
+	camera.mv_matrix = function (model) {
+		return matrix.multiply(new Float32Array(16), camera.view, model || matrix.create());
+	};
 
-		return matrix.multiply(new Float32Array(16), camera.projection, model_view);
+	camera.mvp_matrix = function (model) {
+		return matrix.multiply(new Float32Array(16), camera.projection, camera.mv_matrix(model));
 	};
 
 	return camera;

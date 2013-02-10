@@ -1,9 +1,13 @@
-attribute vec3 vertex_position_attribute;
-attribute float point_size;
+attribute vec3  vertex_position_attribute;
+attribute float point_size_attribute;
+attribute vec4  random_attribute;
 
 uniform mat4 mvp_matrix_uniform;
 
+varying vec4 random;
+
 void main(void) {
-	gl_PointSize = point_size;
+	random = random_attribute;
+	gl_PointSize = point_size_attribute;
 	gl_Position = mvp_matrix_uniform * vec4(vertex_position_attribute, 1.0);
 }
