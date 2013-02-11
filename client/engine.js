@@ -10,8 +10,7 @@ var canvas = require('./engine/canvas'),
 
 var texture = require('./engine/manager/texture'),
     shader = require('./engine/manager/shader'),
-    buffer = require('./engine/manager/buffer'),
-    mesh = require('./engine/manager/mesh');
+    buffer = require('./engine/manager/buffer');
 
 
 exports.init = function (parent) {
@@ -30,7 +29,6 @@ exports.init = function (parent) {
 	engine.texture = texture.init(engine);
 	engine.buffer = buffer.init(engine);
 	engine.shader = shader.init(engine);
-	engine.mesh = mesh.init(engine);
 
 
 	engine.requestFrame =
@@ -41,30 +39,16 @@ exports.init = function (parent) {
 		function (callback) {return setTimeout(callback, 16);}
 
 
-	engine.cancelFrame =
-		window.cancelAnimationFrame ||
-		window.mozCancelAnimationFrame ||
-		window.webkitCancelAnimationFrame ||
-		window.webkitCancelRequestAnimationFrame || 
-		function (timer) {return clearTimeout(timer);}
+	engine.stepWhile = function (callback) {
+		var start = Date.now();
 
+		step();
 
-	engine.startTime = function () {
-		return window.mozAnimationStartTime || Date.now();
-	};
-
-
-	engine.renderWhile = function (callback) {
-		var start;
-
-		function step (now) {
-			start = start || engine.startTime();
-			if (callback(now, start)) {
+		function step () {
+			if (callback(Date.now(), start)) {
 				engine.requestFrame.call(window, step);
 			}
 		}
-
-		step();
 
 		return engine;
 	};

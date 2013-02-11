@@ -6,9 +6,8 @@ function main () {
 	    opacity_uniform =    gl.getUniformLocation(program, 'opacity_uniform'),
 	    texture_uniform =    gl.getUniformLocation(program, 'texture_uniform');
 
-	program.draw = function (buffer, texture, model_matrix_list, nebula) {
-		var info = buffer.info,
-		    camera = nebula.engine.camera;
+	program.draw = function (buffer, texture, model_matrix_list, camera) {
+		var info = buffer.info;
 
 		gl.bindBuffer(info.type, buffer);
 
@@ -26,7 +25,7 @@ function main () {
 
 		model_matrix_list.forEach(function (model_matrix) {
 			var plane_vector = vec3.transformMat4([], [0, 0, 0], model_matrix),
-			    camera_vector = vec3.normalize([], vec3.sub([], vec3.add([], nebula.position, nebula.target), plane_vector)),
+			    camera_vector = vec3.normalize([], vec3.sub([], vec3.add([], camera.position, camera.target), plane_vector)),
 			    normal_vector = vec3.normalize([], vec3.transformMat4([], [0, 0, 1], model_matrix.rotation)),
 			    opacity = Math.abs(vec3.dot(camera_vector, normal_vector)) * 0.75;
 

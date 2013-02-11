@@ -24,7 +24,11 @@ exports.init = function (engine) {
 
 
 	camera.lookAt = function (eye, center, up) {
-		matrix.lookAt(camera.view, eye, center, up);
+		matrix.lookAt(camera.view,
+			this.position = eye || this.position,
+			this.target = center || this.target,
+			this.up = up || this.up
+		);
 
 		return camera;
 	};

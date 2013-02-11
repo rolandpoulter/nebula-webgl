@@ -1,9 +1,9 @@
 "use struct";
 
 
-var events = require('./events'),
-    planes = require('./planes'),
+var planes = require('./planes'),
     stars = require('./stars'),
+    steps = require('./steps'),
     mark = require('./mark');
 
 
@@ -14,6 +14,13 @@ exports.init = function (engine, callback) {
 	    gl = engine.gl;
 
 	nebula.engine = engine;
+
+
+	camera.lookAt(
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 1, 0]
+	);
 
 
 	finish.count = 0;
@@ -33,13 +40,10 @@ exports.init = function (engine, callback) {
 	);
 
 
-	nebula.fullscreen = fullscreen;
-	nebula.position = [0, 10, 10];
-	nebula.target = [0, 0, 0];
-	nebula.up = [0, 1, 0];
+	window.onresize = nebula.fullscreen = fullscreen;
 
 
-	nebula.events = events.init(nebula);
+	nebula.steps = steps.init(nebula);
 
 
 	function finish (error) {
@@ -55,7 +59,7 @@ exports.init = function (engine, callback) {
 				nebula.planes.generate();
 				nebula.mark.prepare();
 
-				engine.renderWhile(render);
+				engine.stepWhile(render);
 
 				if (callback) {
 					callback(null, nebula);
@@ -78,11 +82,7 @@ exports.init = function (engine, callback) {
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 		camera.perspective(45, canvas.width / canvas.height, 0.1, 1000.0);
-		camera.lookAt(
-			nebula.position,
-			nebula.target,
-			nebula.up
-		);
+		camera.lookAt();
 
 		nebula.stars.render();
 		nebula.planes.render();

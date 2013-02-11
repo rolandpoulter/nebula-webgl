@@ -211,6 +211,10 @@ a:focus {
 
 .impress-enabled .step.active { opacity: 1 }
 
+.step {
+	text-shadow: 0 0 10px rgba(255, 255, 255, .5);
+}
+
 /*
     These 'slide' step styles were heavily inspired by HTML5 Slides:
     http://html5slides.googlecode.com/svn/trunk/styles.css

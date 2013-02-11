@@ -1,8 +1,9 @@
-exports.init = function (nebula) {
-	var events = {};
+"use strict";
 
 
-	window.onresize = nebula.fullscreen;
+exports.init = function (engine) {
+	var events = {},
+	    camera = engine.camera;
 
 
 	var action = events.action = {
@@ -11,7 +12,7 @@ exports.init = function (nebula) {
 				action.forward(amount);
 			
 			} else {
-				nebula.position[1] += amount || 0.25;
+				camera.position[1] += amount || 0.25;
 				//console.log(nebula.position);
 			}
 		},
@@ -21,7 +22,7 @@ exports.init = function (nebula) {
 				action.backward(amount);
 
 			} else {
-				nebula.position[1] -= amount || 0.25;
+				camera.position[1] -= amount || 0.25;
 				//console.log(nebula.position);
 			}
 		},
@@ -32,17 +33,17 @@ exports.init = function (nebula) {
 		},
 
 		right: function (amount) {
-			nebula.position[0] += amount || 0.25;
+			camera.position[0] += amount || 0.25;
 			//console.log(nebula.position);
 		},
 
 		forward: function (amount) {
-			nebula.position[2] -= amount || 0.25;
+			camera.position[2] -= amount || 0.25;
 			//console.log(nebula.position);
 		},
 
 		backward: function (amount) {
-			nebula.position[2] += amount || 0.25;
+			camera.position[2] += amount || 0.25;
 			//console.log(nebula.position);
 		}
 	};

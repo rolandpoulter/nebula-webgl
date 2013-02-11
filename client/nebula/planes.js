@@ -103,7 +103,7 @@ exports.init = function (nebula, callback) {
 					planes.square,
 					planes.cloud,
 					planes.model_matrix_list,
-					nebula
+					camera
 				);
 
 				return planes;

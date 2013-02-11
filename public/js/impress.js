@@ -273,6 +273,12 @@
         // reference to last entered step
         var lastEntered = null;
         
+        var onBeforeStepEnter = function (step, detail) {
+        	if (lastEntered !== step) {
+        		triggerEvent(step, "impress:beforestepenter", detail);
+        	}
+        };
+        
         // `onStepEnter` is called whenever the step element is entered
         // but the event is triggered only if the step is different than
         // last entered step.
@@ -541,6 +547,10 @@
             // If you want learn something interesting and see how it was done with `transitionend` go back to
             // version 0.5.2 of impress.js: http://github.com/bartaz/impress.js/blob/0.5.2/js/impress.js
             window.clearTimeout(stepEnterTimeout);
+            onBeforeStepEnter(activeStep, {
+            	duration: duration + delay,
+            	currentState: currentState
+            });
             stepEnterTimeout = window.setTimeout(function() {
                 onStepEnter(activeStep);
             }, duration + delay);
