@@ -35,11 +35,11 @@ exports.init = function (nebula) {
 		m = matrix.create();
 		matrix.rotate(m, m, deg2rad(orbit.rotate.z), v);
 		vector.transformMat4(camera.up, up, m);
-		var u = vector.normalize([], camera.up);
-		m = matrix.create();
-		matrix.rotate(m, m, deg2rad(orbit.rotate.y), u);
-		matrix.rotate(m, m, deg2rad(orbit.rotate.x), vector.cross([], v, up));
-		vector.transformMat4(camera.target, target, m);
+		//var u = vector.normalize([], camera.up);
+		//m = matrix.create();
+		//matrix.rotate(m, m, deg2rad(orbit.rotate.x), u);
+		//matrix.rotate(m, m, deg2rad(orbit.rotate.y), vector.cross([], v, up));
+		//vector.transformMat4(camera.target, target, m);
 	};
 
 	function deg2rad (deg) {return deg * (Math.PI / 180);}
