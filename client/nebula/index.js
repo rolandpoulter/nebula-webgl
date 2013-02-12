@@ -3,6 +3,7 @@
 
 var planes = require('./planes'),
     stars = require('./stars'),
+    orbit = require('./orbit'),
     steps = require('./steps'),
     mark = require('./mark');
 
@@ -16,11 +17,8 @@ exports.init = function (engine, callback) {
 	nebula.engine = engine;
 
 
-	camera.lookAt(
-		[0, 0, 0],
-		[0, 0, 0],
-		[0, 1, 0]
-	);
+	nebula.orbit = orbit.init(nebula);
+	nebula.orbit.toCamera();
 
 
 	finish.count = 0;
@@ -43,6 +41,7 @@ exports.init = function (engine, callback) {
 	window.onresize = nebula.fullscreen = fullscreen;
 
 
+	//require('../engine/camera_events').init(engine);
 	nebula.steps = steps.init(nebula);
 
 
@@ -82,6 +81,8 @@ exports.init = function (engine, callback) {
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 		camera.perspective(45, canvas.width / canvas.height, 0.1, 1000.0);
+
+		nebula.orbit.toCamera();
 		camera.lookAt();
 
 		nebula.stars.render();

@@ -23,6 +23,10 @@ exports.init = function (engine) {
 	};
 
 
+	camera.position = [0, 0, 10];
+	camera.target = [0, 0, 0];
+	camera.up = [0, 1, 0]
+
 	camera.lookAt = function (eye, center, up) {
 		matrix.lookAt(camera.view,
 			this.position = eye || this.position,
@@ -34,12 +38,12 @@ exports.init = function (engine) {
 	};
 
 
-	camera.mv_matrix = function (model) {
+	camera.mvMatrix = function (model) {
 		return matrix.multiply(new Float32Array(16), camera.view, model || matrix.create());
 	};
 
-	camera.mvp_matrix = function (model) {
-		return matrix.multiply(new Float32Array(16), camera.projection, camera.mv_matrix(model));
+	camera.mvpMatrix = function (model) {
+		return matrix.multiply(new Float32Array(16), camera.projection, camera.mvMatrix(model));
 	};
 
 	return camera;

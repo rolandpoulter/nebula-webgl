@@ -5,6 +5,7 @@ exports.init = function (nebula) {
 	var steps = {},
 	    engine = nebula.engine,
 	    camera = engine.camera,
+	    orbit = nebula.orbit,
 	    matrix = engine.math.mat4,
 	    vector = engine.math.vec3;
 
@@ -17,52 +18,59 @@ exports.init = function (nebula) {
 	impressDom.addEventListener('impress:beforestepenter', function (e) {
 		var currentState = e.detail.currentState,
 		    duration = e.detail.duration,
-		    position = camera.position,
-		    up = camera.up;
-
-		var step = e.target || e.srcElement,
-		    data = step.dataset;
-
-
-		function deg2rad (deg) {return deg * (Math.PI / 180);}
-
-		console.log(currentState.rotate);
-		var m = matrix.create();
-		matrix.rotateZ(m, m, deg2rad(currentState.rotate.z));
-		matrix.rotateY(m, m, deg2rad(currentState.rotate.y));
-		matrix.rotateX(m, m, deg2rad(currentState.rotate.x));
-
-		var last = position.slice(0),
-		    l = up.slice(0);
-
-		var next = [
-			currentState.translate.x / 250,
-			currentState.translate.y / 250 + 10,
-			currentState.translate.z / 250 + 10
-		];
-		var n = vector.transformMat4([], l, m);
-
-
-		var diff = [
-			next[0] - last[0],
-			next[1] - last[1],
-			next[2] - last[2],
-		];
-		var d = [n[0] - l[0], n[1] - l[1], n[2] - l[2]];
-
+		    position = orbit.position,
+		    rotate = orbit.rotate;
+		var last = {
+			x: position.x,
+			y: position.y,
+			z: position.z
+		};
+		var lastScale = orbit.scale;
+		var lastR = {
+			x: rotate.x,
+			y: rotate.y,
+			z: rotate.z
+		};
+		var next = {
+			x: currentState.translate.x / 180,
+			y: currentState.translate.y / 180,
+			z: -currentState.translate.z / 100 + 10
+		};
+		var nextScale = currentState.scale;
+		var nextR = {
+			x: currentState.rotate.x,
+			y: currentState.rotate.y,
+			z: -currentState.rotate.z
+		};
+		var diff = {
+			x: next.x - last.x,
+			y: next.y - last.y,
+			z: next.z - last.z,
+		};
+		var diffScale = nextScale - lastScale;
+		var diffR = {
+			x: nextR.x - lastR.x,
+			y: nextR.y - lastR.y,
+			z: nextR.z - lastR.z,
+		};
 		if (duration === 0) {
-			position[0] = next[0];
-			position[1] = next[1];
-			position[2] = next[2];
+			position.x = next.x;
+			position.y = next.y;
+			position.z = next.z;
+			orbit.scale = nextScale;
+			rotate.x = nextR.x;
+			rotate.y = nextR.y;
+			rotate.z = nextR.z;
 
 		} else {
 			animate(duration, function (ratio) {
-				position[0] = last[0] + (diff[0] * ratio);
-				position[1] = last[1] + (diff[1] * ratio);
-				position[2] = last[2] + (diff[2] * ratio);
-				up[0] = l[0] + (d[0] * ratio);
-				up[1] = l[1] + (d[1] * ratio);
-				up[2] = l[2] + (d[2] * ratio);
+				position.x = last.x + (diff.x * ratio);
+				position.y = last.y + (diff.y * ratio);
+				position.z = last.z + (diff.z * ratio);
+				orbit.scale = lastScale + (diffScale * ratio);
+				rotate.x = lastR.x + (diffR.x * ratio);
+				rotate.y = lastR.y + (diffR.y * ratio);
+				rotate.z = lastR.z + (diffR.z * ratio);
 			});
 		}
 	});

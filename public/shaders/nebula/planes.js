@@ -29,7 +29,7 @@ function main () {
 			    normal_vector = vec3.normalize([], vec3.transformMat4([], [0, 0, 1], model_matrix.rotation)),
 			    opacity = Math.abs(vec3.dot(camera_vector, normal_vector)) * 0.75;
 
-			gl.uniformMatrix4fv(mvp_matrix_uniform, false, camera.mvp_matrix(model_matrix));
+			gl.uniformMatrix4fv(mvp_matrix_uniform, false, camera.mvpMatrix(model_matrix));
 			gl.uniform1f(opacity_uniform, opacity);
 
 			gl.drawArrays(gl.TRIANGLE_STRIP, 0, info.item_length);

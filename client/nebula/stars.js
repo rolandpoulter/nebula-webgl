@@ -79,7 +79,7 @@ exports.init = function (nebula, callback) {
 
 				gl.blendEquation(gl.FUNC_ADD);
 
-				program.draw(stars.list, sprite, camera.mvp_matrix());
+				program.draw(stars.list, sprite, camera.mvpMatrix());
 
 				return stars;
 			};

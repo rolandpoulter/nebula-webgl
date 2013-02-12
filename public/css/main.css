@@ -10,7 +10,12 @@ body.error {
 
 a {
 	color: #00B7FF;
-}*/
+}
+
+#impress {
+	display: none !importan;
+}
+*/
 /*
     So you like the style of impress.js demo?
     Or maybe you are just curious how it was done?
