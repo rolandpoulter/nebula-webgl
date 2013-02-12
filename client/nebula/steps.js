@@ -1,6 +1,9 @@
 "use strict";
 
 
+var cubic_bezier = require('cubic-bezier')
+
+
 exports.init = function (nebula) {
 	var steps = {},
 	    engine = nebula.engine,
@@ -76,12 +79,13 @@ exports.init = function (nebula) {
 	});
 
 	function animate (duration, callback) {
-		var end = Date.now() + duration;
+		var end = Date.now() + duration,
+		    ease = cubic_bezier(0.25, 0.1, 0.25, 1, (1000 / 60 / duration) / 4);
 
 		engine.stepWhile(function (now, start) {
 			var done = now >= end;
 
-			callback(Math.max(0.0, Math.min(1.0, done ? 1.0 : (now - start) / (end - start))));
+			callback(ease(Math.max(0.0, Math.min(1.0, done ? 1.0 : (now - start) / (end - start)))));
 
 			return !done;
 		});
