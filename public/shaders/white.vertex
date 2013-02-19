@@ -3,5 +3,6 @@ attribute vec3 vertex_position_attribute;
 uniform mat4 mvp_matrix_uniform;
 
 void main(void) {
+	gl_PointSize = 4.0;
 	gl_Position = mvp_matrix_uniform * vec4(vertex_position_attribute, 1.0);
 }

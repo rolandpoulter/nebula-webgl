@@ -24,22 +24,30 @@ exports.init = function (nebula) {
 
 	orbit.toCamera = function (camera) {
 		camera = camera || nebula.engine.camera;
-		var position = [0, 0, -orbit.position.z];
-		var m = matrix.create();
+
+		var position = [0, 0, -orbit.position.z],
+		    m = matrix.create();
+
 		matrix.rotateY(m, m, deg2rad(orbit.position.x));
 		matrix.rotateX(m, m, deg2rad(orbit.position.y));
 		vector.transformMat4(camera.position, position, m);
-		var up = [0, 1, 0];
-		var target = [0, 0, 0];
-		var v = vector.normalize([], vector.sub([], target, position));
+
+		var up = [0, 1, 0],
+		    target = [0, 0, 0],
+		    v = vector.normalize([], vector.sub([], target, position));
+
 		m = matrix.create();
 		matrix.rotate(m, m, deg2rad(orbit.rotate.z), v);
 		vector.transformMat4(camera.up, up, m);
+
 		var u = vector.normalize([], camera.up);
+
 		m = matrix.create();
 		matrix.rotate(m, m, deg2rad(orbit.rotate.x), u);
 		matrix.rotate(m, m, deg2rad(orbit.rotate.y), vector.cross([], v, up));
+
 		var p = vector.clone(camera.position);
+
 		vector.transformMat4(p, p, m);
 		vector.sub(camera.target, camera.position, p);
 	};

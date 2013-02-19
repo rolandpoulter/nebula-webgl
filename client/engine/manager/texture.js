@@ -39,6 +39,8 @@ exports.init = function (engine) {
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 		gl.bindTexture(gl.TEXTURE_2D, null);
 
+		if (!name) return texture;
+
 		return manager.cache[name] = texture;
 	};
 

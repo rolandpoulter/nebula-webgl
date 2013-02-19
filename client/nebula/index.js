@@ -41,8 +41,8 @@ exports.init = function (engine, callback) {
 	window.onresize = nebula.fullscreen = fullscreen;
 
 
-	//require('../engine/camera_events').init(engine);
-	nebula.steps = steps.init(nebula);
+	require('../engine/camera_events').init(engine);
+	//nebula.steps = steps.init(nebula);
 
 
 	function finish (error) {
@@ -56,7 +56,6 @@ exports.init = function (engine, callback) {
 			if (!finish.error && finish.count === finish.target) {
 				nebula.stars.generate();
 				nebula.planes.generate();
-				nebula.mark.prepare();
 
 				engine.stepWhile(render);
 
@@ -82,7 +81,7 @@ exports.init = function (engine, callback) {
 
 		camera.perspective(45, canvas.width / canvas.height, 0.1, 1000.0);
 
-		nebula.orbit.toCamera();
+		//nebula.orbit.toCamera();
 		camera.lookAt();
 
 		nebula.stars.render();

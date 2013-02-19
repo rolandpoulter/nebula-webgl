@@ -13,7 +13,7 @@ exports.init = function (engine) {
 			
 			} else {
 				camera.position[1] += amount || 0.25;
-				//console.log(camera.position);
+				console.log(camera.position);
 			}
 		},
 
@@ -23,28 +23,28 @@ exports.init = function (engine) {
 
 			} else {
 				camera.position[1] -= amount || 0.25;
-				//console.log(camera.position);
+				console.log(camera.position);
 			}
 		},
 
 		left: function (amount) {
 			camera.position[0] -= amount || 0.25;
-			//console.log(camera.position);
+			console.log(camera.position);
 		},
 
 		right: function (amount) {
 			camera.position[0] += amount || 0.25;
-			//console.log(camera.position);
+			console.log(camera.position);
 		},
 
 		forward: function (amount) {
 			camera.position[2] -= amount || 0.25;
-			//console.log(camera.position);
+			console.log(camera.position);
 		},
 
 		backward: function (amount) {
 			camera.position[2] += amount || 0.25;
-			//console.log(camera.position);
+			console.log(camera.position);
 		}
 	};
 

@@ -42,7 +42,7 @@ exports.init = function (engine) {
 
 		function isSuccess (request) {
 			var status = request.status;
-			return status >= 200 && status < 300 || status === 304 
+			return status >= 200 && status < 300 || status === 304;
 		}
 
 		function finish () {
@@ -79,12 +79,16 @@ exports.init = function (engine) {
 	manager.compile = function (name, procedure_source, fragment_source, vertex_source) {
 		var gl = engine.gl;
 
+		if (!name) return compileProgram();
+
 		return manager.cache[name] = compileProgram();
 
 		function compileProgram () {
 			var program = gl.createProgram();
 
-			program.name = name;
+			if (name) {
+				program.name = name;
+			}
 
 			gl.attachShader(program, compileVertexShader());
 			gl.attachShader(program, compileFragmentShader());

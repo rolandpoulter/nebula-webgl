@@ -39,8 +39,11 @@ exports.init = function (engine) {
 		gl.bindBuffer(options.type, buffer);
 		gl.bufferData(options.type, array_buffer, options.draw_type);
 
-		buffer.name = name;
 		buffer.info = options;
+
+		if (!name) return buffer;
+
+		buffer.name = name;
 
 		return manager.cache[name] = buffer;
 	}

@@ -2,17 +2,24 @@
 
 
 exports.init = function (parent) {
-	var canvas = document.createElement('canvas');
+	var canvas = document.createElement('canvas'),
+	    names = ['webgl', 'experimental-webgl', 'webkit-3d', 'moz-webgl'];
 
-	try {
-		canvas.gl = canvas.getContext('experimental-webgl');
-	} catch (e) {}
+	names.forEach(function (name) {
+		if (canvas.gl) return;
+
+		try {
+			canvas.gl = canvas.getContext(name);
+		} catch (e) {}
+	})
 
 	if (parent) {
 		if (!canvas.gl) {
-			parent.innerHTML = 'Could not initialise WebGL.';
+			document.body.className += ' webgl-not-supported';
 
 		} else {
+			document.body.className += ' webgl-supported';
+
 			parent.appendChild(canvas);
 		}
 	}
